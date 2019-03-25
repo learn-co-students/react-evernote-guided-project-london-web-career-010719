@@ -1,14 +1,25 @@
 import React from 'react';
 import NoteItem from './NoteItem';
 
-const NoteList = (props) => {
-  return (
-    <ul>
-      {
-       props.allNotes.map(note => note.user.id === props.currentUser.id ? <NoteItem key={note.id} note={note} onClickViewNote={() => props.onClickViewNote(note)}/> : null)
-      }
-    </ul>
-  );
-}
+export default class NoteList extends React.Component {
 
-export default NoteList;
+  renderList () {
+    if (this.props.searchTerm === "") {
+      const userNotes = this.props.allNotes.map(note => note.user_id === this.props.currentUser.id)
+      userNotes.map(note => <NoteItem key={note.id} note={note} onClickViewNote={() => this.props.onClickViewNote(note)}/>)
+    } else {
+      const matchSearch = this.props.allNotes.map(note => note.toLowerCase().includes(this.props.searchTerm.toLowerCase()))
+      return matchSearch.map(note => <NoteItem key={note.id} note={note} onClickViewNote={() => this.props.onClickViewNote(note)}/>)
+    }
+  }
+
+  render() {
+    return (
+      <ul>
+        {
+         this.renderList
+        }
+      </ul>
+    );
+  }
+}

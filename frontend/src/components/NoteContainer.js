@@ -11,7 +11,8 @@ class NoteContainer extends Component {
     allNotes:[],
     currentUser: '',
     selectedNote: '',
-    editViewOn: false
+    editViewOn: false,
+    searchTerm: ''
   }
 
   componentDidMount(){
@@ -24,13 +25,50 @@ class NoteContainer extends Component {
 
   selectNote = note => this.setState({selectedNote: note})
 
+  showEditor = () => this.setState({editViewOn: true})
+
+  // updateNote = (title, body) => {
+  //
+  //   fetch("http://localhost:3000/api/v1/notes"+`/${this.state.selectedNote.id}`, {
+  //     method: 'PATCH',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify(updatedNote)
+  //     })
+  //       .then(res => res.json())
+  //       .then(note =>
+  //         this.setState({selectedNote: note}))
+  //   }
+  // }
+
+  createNewNote = () => {
+    console.log('clicked')
+    const newNote = {
+      title: 'Add new title...',
+      body: 'Add content...',
+      user_id: this.state.currentUser.id
+    }
+    return fetch("http://localhost:3000/api/v1/notes", {
+      method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newNote)
+      })
+        .then(res => res.json())
+        .then(note => this.setState({ allNotes: [...this.state.allNotes, note] }))
+    }
+
+  handleChange = (event) => this.setState({searchTerm: event.target.value })
+
   render() {
     return (
       <Fragment>
-        <Search />
+        <Search handleChange={this.handleChange}/>
         <div className='container'>
-          <Sidebar currentUser={this.state.currentUser} allNotes={this.state.allNotes} onClickViewNote={this.selectNote}/>
-          <Content editViewOn={this.state.editViewOn} selectedNote={this.state.selectedNote}/>
+          <Sidebar searchTerm={this.state.searchTerm} currentUser={this.state.currentUser} allNotes={this.state.allNotes} onClickViewNote={this.selectNote} onClickNewNote={this.createNewNote}/>
+          <Content editViewOn={this.state.editViewOn} selectedNote={this.state.selectedNote} showEditor={this.showEditor} saveChanges={this.updateNote}/>
         </div>
       </Fragment>
     );

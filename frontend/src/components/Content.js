@@ -7,9 +7,9 @@ class Content extends Component {
 
   renderContent = () => {
     if (this.props.editViewOn === true) {
-      return <NoteEditor />;
+      return <NoteEditor selectedNote={this.props.selectedNote} saveChanges={this.props.saveChanges}/>;
     } else if (this.props.editViewOn === false && this.props.selectedNote) {
-      return <NoteViewer selectedNote={this.props.selectedNote}/>;
+      return <NoteViewer selectedNote={this.props.selectedNote} onClick={this.props.showEditor}/>;
     } else {
       return <Instructions />;
     }
