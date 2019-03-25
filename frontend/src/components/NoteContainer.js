@@ -10,7 +10,8 @@ class NoteContainer extends Component {
     allUsers:[],
     allNotes:[],
     currentUser: '',
-    selectedNote: ''
+    selectedNote: '',
+    editViewOn: false
   }
 
   componentDidMount(){
@@ -21,11 +22,7 @@ class NoteContainer extends Component {
       .then(notes => this.setState({allNotes: notes}))
   }
 
-  selectNote = note => console.log(selectNote)
-
-  renderContent = () => {
-
-  }
+  selectNote = note => this.setState({selectedNote: note})
 
   render() {
     return (
@@ -33,7 +30,7 @@ class NoteContainer extends Component {
         <Search />
         <div className='container'>
           <Sidebar currentUser={this.state.currentUser} allNotes={this.state.allNotes} onClickViewNote={this.selectNote}/>
-          <Content />
+          <Content editViewOn={this.state.editViewOn} selectedNote={this.state.selectedNote}/>
         </div>
       </Fragment>
     );
