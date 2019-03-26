@@ -4,15 +4,17 @@ import NoteItem from './NoteItem';
 export default class NoteList extends React.Component {
 
   renderList () {
-    const matchSearch = this.props.allNotes.filter(note => note.title.toLowerCase().includes(this.props.searchTerm.toLowerCase()))
-    const userNotes = this.props.allNotes.filter(note => note.user_id === this.props.currentUser.id)
+    const notesWithUser = this.props.allNotes.filter(note => note.user)
+    const userNotes = notesWithUser.filter(note => note.user.id === this.props.currentUser.id)
+    const matchSearch = userNotes.filter(note => note.title.toLowerCase().includes(this.props.searchTerm.toLowerCase()))
 
-    // if (this.props.searchTerm === '') {
-      return userNotes.map(note => <NoteItem key={note.id} note={note} onClickViewNote={() => this.props.onClickViewNote(note)}/>)
-    // } else {
-    //   return matchSearch.map(note => <NoteItem key={note.id} note={note} onClickViewNote={() => this.props.onClickViewNote(note)}/>)
-    // }
+    if (this.props.searchTerm === '') {
+      return userNotes.map(note => <NoteItem key={note.id} {...note} onClickViewNote={() => this.props.onClickViewNote(note)}/>)
+    } else {
+      return matchSearch.map(note => <NoteItem key={note.id} {...note} onClickViewNote={() => this.props.onClickViewNote(note)}/>)
+    }
   }
+
 
   render() {
     return (
@@ -23,4 +25,5 @@ export default class NoteList extends React.Component {
       </ul>
     );
   }
+
 }
