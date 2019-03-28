@@ -12,7 +12,8 @@ class NoteContainer extends Component {
     currentUser: '',
     selectedNote: '',
     editViewOn: false,
-    searchTerm: ''
+    searchTerm: '',
+    sortBy: 'alphabetically'
   }
 
   componentDidMount(){
@@ -68,12 +69,14 @@ class NoteContainer extends Component {
 
   handleChange = (event) => this.setState({searchTerm: event.target.value })
 
+  sortBy = (event) => this.setState({sortBy: event.target.value})
+
   render() {
     return (
       <Fragment>
         <Search handleChange={this.handleChange}/>
         <div className='container'>
-          <Sidebar searchTerm={this.state.searchTerm} currentUser={this.state.currentUser} allNotes={this.state.allNotes} onClickViewNote={this.selectNote} onClickNewNote={this.createNewNote} />
+          <Sidebar sortBy={this.state.sortBy} handleSortChange={this.sortBy} searchTerm={this.state.searchTerm} currentUser={this.state.currentUser} allNotes={this.state.allNotes} onClickViewNote={this.selectNote} onClickNewNote={this.createNewNote} />
           <Content editViewOn={this.state.editViewOn} selectedNote={this.state.selectedNote} showEditor={this.showEditor} saveChanges={this.updateNote} cancelEdit={this.cancelEdit} />
         </div>
       </Fragment>

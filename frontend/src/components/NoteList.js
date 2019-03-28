@@ -9,6 +9,9 @@ export default class NoteList extends React.Component {
     const matchSearch = userNotes.filter(note => note.title.toLowerCase().includes(this.props.searchTerm.toLowerCase()))
 
     if (this.props.searchTerm === '') {
+      // switch (this.props.searchTerm)
+      //   case longest:
+      //     byLong = userNotes.
       return userNotes.map(note => <NoteItem key={note.id} {...note} onClickViewNote={() => this.props.onClickViewNote(note)}/>)
     } else {
       return matchSearch.map(note => <NoteItem key={note.id} {...note} onClickViewNote={() => this.props.onClickViewNote(note)}/>)
